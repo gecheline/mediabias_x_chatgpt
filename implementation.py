@@ -89,7 +89,7 @@ class MediaBiasModel:
         'white-nationalism':'white-nationalism',
         }
 
-        df = pd.read_excel('data/final_labels_SG2.xlsx.csv')
+        df = pd.read_excel('data/final_labels_SG2.xlsx')
         embeddings = np.load('data/sentences_embeddings.npy')
         df['embedding'] = embeddings.to_list
 

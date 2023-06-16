@@ -79,7 +79,7 @@ def generate_embedding_umap():
     '''
     Computes and displays a UMAP 3D map of the media bias dataset ADA embeddings.
     '''
-    df = pd.read_excel('data/final_labels_SG2.xlsx.csv')
+    df = pd.read_excel('data/final_labels_SG2.xlsx')
     embeddings = np.load('data/sentences_embeddings.npy')
     df['embedding'] = embeddings.to_list
 
