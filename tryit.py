@@ -32,7 +32,7 @@ def tryityourself_tab():
     st.header("Content analyzer")
     st.write("As a practical application of my model, I built an article analyzer which can take a larger body of text, analyze each sentence independently and return a summary of the article's topic, objectivity and political bias.")
     st.write("If you have an OpenAI API key, you can paste it here to use the content analyzer!")
-    api_key = st.text_input(label='OpenAI API key', value='')
+    api_key = st.text_input(label='OpenAI API key', value='', key='tryitapi')
     if len(api_key)>0:
         openai.api_key = api_key
         st.write("Keep in mind that the topic classifier, in particular, will mostly work well on topics present in the training data, like environment, coronavirus and vaccines, abortion, politics, etc. Content pertaining to a very specific topic outside of these is more likely to be misclassified.")

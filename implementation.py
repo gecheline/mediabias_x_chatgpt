@@ -386,7 +386,7 @@ class MediaBiasModel:
     ''')
 
     st.write("If you have an OpenAI API key, you can paste it here to fit the model in real time!")
-    api_key = st.text_input(label='OpenAI API key', value='')
+    api_key = st.text_input(label='OpenAI API key', value='', key='impapi')
     if len(api_key)>0:
         openai.api_key = api_key
         st.write('Click the button below to fit the model to the training data!')
