@@ -91,7 +91,7 @@ class MediaBiasModel:
 
         df = pd.read_excel('data/final_labels_SG2.xlsx')
         embeddings = np.load('data/sentences_embeddings.npy')
-        df['embedding'] = embeddings.to_list
+        df['embedding'] = embeddings.to_list()
 
         df = df.rename(columns={'topic':'topic_original'})
         df['topic'] = df['topic_original'].map(new_topics_map)

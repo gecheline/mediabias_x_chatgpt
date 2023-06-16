@@ -81,7 +81,7 @@ def generate_embedding_umap():
     '''
     df = pd.read_excel('data/final_labels_SG2.xlsx')
     embeddings = np.load('data/sentences_embeddings.npy')
-    df['embedding'] = embeddings.to_list
+    df['embedding'] = embeddings.to_list()
 
     if 'umap_3d_x' not in df.columns:
         with st.spinner('Calculating UMAP dimensionality reduction'):
