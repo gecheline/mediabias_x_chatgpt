@@ -82,7 +82,7 @@ def generate_embedding_umap():
 
     if 'umap_3d_x' not in df.columns:
         with st.spinner('Calculating UMAP dimensionality reduction'):
-            embeddings_3d = UMAP(n_components=3).fit_transform(embeddings)
+            embeddings_3d = UMAP(n_components=3).fit_transform(np.vstack(df['embedding']))
             df['umap_3d_x'] = embeddings_3d[:,0]
             df['umap_3d_y'] = embeddings_3d[:,1]
             df['umap_3d_z'] = embeddings_3d[:,2]
