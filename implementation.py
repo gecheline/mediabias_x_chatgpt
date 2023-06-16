@@ -20,6 +20,9 @@ import openai
 import tiktoken
 from openai.embeddings_utils import get_embedding
 
+api_key = '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'
+openai.api_key = api_key
+
 @st.cache_resource
 class MediaBiasModel:
 

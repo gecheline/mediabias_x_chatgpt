@@ -3,6 +3,10 @@ from implementation import MediaBiasModel
 import pandas as pd
 import plotly.express as px
 
+import openai 
+api_key = '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'
+openai.api_key = api_key
+
 @st.cache_resource
 def run_model(article):
     if len(article) > 5000:
