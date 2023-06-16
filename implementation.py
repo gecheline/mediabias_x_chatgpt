@@ -20,8 +20,6 @@ import openai
 import tiktoken
 from openai.embeddings_utils import get_embedding
 
-api_key = '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'
-openai.api_key = api_key
 
 @st.cache_resource
 class MediaBiasModel:
@@ -387,17 +385,21 @@ class MediaBiasModel:
         return df_sentences
     ''')
 
-    st.write('Click the button below to fit the model to the training data!')
-    if st.button('Fit model', key='fitmodels'):
-        with st.spinner('Initializing model...'):
-            model = MediaBiasModel()
-        with st.spinner('Loading data...'):
-            model.load_data()
-        with st.spinner('Transforming data...'):
-            model.transform_data()
-        with st.spinner('Fitting classifiers...'):
-            model.fit_models()
+    st.write("If you have an OpenAI API key, you can paste it here to fit the model in real time!")
+    api_key = st.text_input(label='OpenAI API key', value='')
+    if len(api_key)>0:
+        openai.api_key = api_key
+        st.write('Click the button below to fit the model to the training data!')
+        if st.button('Fit model', key='fitmodels'):
+            with st.spinner('Initializing model...'):
+                model = MediaBiasModel()
+            with st.spinner('Loading data...'):
+                model.load_data()
+            with st.spinner('Transforming data...'):
+                model.transform_data()
+            with st.spinner('Fitting classifiers...'):
+                model.fit_models()
 
-        model_tag = st.text_input("Provide a model tag for saving your models that you can use to load them later.", value="model tag", max_chars=20)
-        if st.button('Save models', key='savemodels'):
-            model.save_models(model_tag=model_tag)
+            model_tag = st.text_input("Provide a model tag for saving your models that you can use to load them later.", value="model tag", max_chars=20)
+            if st.button('Save models', key='savemodels'):
+                model.save_models(model_tag=model_tag)
