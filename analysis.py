@@ -79,8 +79,9 @@ def generate_embedding_umap():
     '''
     Computes and displays a UMAP 3D map of the media bias dataset ADA embeddings.
     '''
-    df = pd.read_csv('data/sentences_data.csv')
+    df = pd.read_excel('data/final_labels_SG2.xlsx.csv')
     embeddings = np.load('data/sentences_embeddings.npy')
+    df['embedding'] = embeddings.to_list
 
     if 'umap_3d_x' not in df.columns:
         with st.spinner('Calculating UMAP dimensionality reduction'):
@@ -88,9 +89,6 @@ def generate_embedding_umap():
             df['umap_3d_x'] = embeddings_3d[:,0]
             df['umap_3d_y'] = embeddings_3d[:,1]
             df['umap_3d_z'] = embeddings_3d[:,2]
-
-            df.to_csv('data/sentences_data.csv')
-
 
     fig_umap = px.scatter_3d(df, x='umap_3d_x', y='umap_3d_y', z='umap_3d_z', color='topic', 
                             width=1000, height=680, hover_data=["outlet", "label_bias"])
