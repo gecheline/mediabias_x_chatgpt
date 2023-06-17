@@ -9,11 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-try:
-    api_key = os.getenv('OPENAI_API_KEY')
-except:
-    api_key = ''
-
+api_key = os.getenv('OPENAI_API_KEY')
 
 @st.cache_resource
 def run_model(article):
@@ -71,7 +67,7 @@ def chatgpt_tab():
     st.write("As a practical application of my model, I built an article analyzer which can take a larger body of text, analyze each sentence independently and return a summary of the article's topic, objectivity and political bias.")
     st.write("If you're running this app locally and have an OpenAI API key, store it in an .env file as *OPENAI_API_KEY='your key here'* in the app folder to unlock this section.")
     
-    if len(api_key)>0:
+    if api_key is not None:
         openai.api_key = api_key
         st.write("Keep in mind that the topic classifier, in particular, will mostly work well on topics present in the training data, like environment, coronavirus and vaccines, abortion, politics, etc. Content pertaining to a very specific topic outside of these is more likely to be misclassified.")
         st.write("See it in action by pasting text below (limited to about a page to avoid overcharging the OpenAI API key and run faster in real time!)")
