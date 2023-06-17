@@ -19,6 +19,12 @@ from sklearn.neural_network import MLPClassifier
 import openai
 import tiktoken
 from openai.embeddings_utils import get_embedding
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = os.getenv('OPENAI_API_KEY') 
+openai.api_key = api_key
 
 
 @st.cache_resource
@@ -91,12 +97,13 @@ class MediaBiasModel:
         }
 
         df = pd.read_excel('data/final_labels_SG2.xlsx')
-        embeddings = np.load('data/sentences_embeddings.npy')
-        df['embedding'] = embeddings.tolist()
+        df = df[df['label_bias']!='No agreement']
+        df['outlet_bias'] = df['outlet'].map(media_bias_map)
+        df = df.drop(columns=['type'])
 
         df = df.rename(columns={'topic':'topic_original'})
         df['topic'] = df['topic_original'].map(new_topics_map)
-        df['outlet_bias'] = df['outlet'].map(media_bias_map)
+        
         self.df = df
 
     def transform_data(self, input_df=None):
@@ -136,8 +143,8 @@ class MediaBiasModel:
         '''
         Fits the classifiers for topic, bias and outlet bias on the training data.
         '''
-        self.topic_model = KNeighborsClassifier(n_neighbors=15)
-        self.bias_model = LogisticRegression(C=0.0002, penalty='l2')
+        self.topic_model = KNeighborsClassifier(metric='euclidean', n_neighbors=10, weights='distance')
+        self.bias_model = LogisticRegression(C=2.782559402207126, max_iter=1000, solver='newton-cg', penalty='l2')
         self.politics_model = MLPClassifier(hidden_layer_sizes=(128, 128), max_iter=300)
 
         print('Fitting topic classifier...')
@@ -205,6 +212,8 @@ class MediaBiasModel:
         df_sentences = self.predict_labels_df(df_sentences)
 
         return df_sentences
+
+
 def implementation_tab():
     st.write("We'll now use everything learned in the model analysis section to implement the final topic and bias classification model. The code is given below.")
     st.code('''

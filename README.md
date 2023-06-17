@@ -7,33 +7,32 @@ This repository explores approached to classification based on topic, bias and p
 The code in this repository utilizes the following packages:
 - numpy
 - pandas
+- matplotlib
+- scipy
 - plotly
+- seaborn
 - scikit-learn
 - umap-learn
 - openai
 - tiktoken
 
-The accompanying web app additionally depends on streamlit, which was used to build it.
+The accompanying web app additionally depends on streamlit, which was used to build it and is necessary to run it locally.
 
 ## Data and Modeling
-The data used for training the machine learning models was obtained from [the BABE dataset on Kaggle](https://www.kaggle.com/datasets/timospinde/babe-media-bias-annotations-by-experts). I used the largest dataset of sentences labeled by human experts (SG2). Approaches to topic, bias and outlet bias classification were explored with sklearn and we found that:
+The data used for training the machine learning models was obtained from [the BABE dataset on Kaggle](https://www.kaggle.com/datasets/timospinde/babe-media-bias-annotations-by-experts). I used the largest dataset of sentences labeled by human experts (SG2). Approaches to topic, bias and outlet bias classification were explored with sklearn and I found that:
 - a neigbors (distance) based topic works best for topic due to the nature of ADA embeddings
 - LogisticRegression was the best classifier for bias, closely followed by RandomForest and MLP classifiers
 - an MLP classifier performed best for the political (outlet) bias prediction of the sentences.
-Additionally, all model hyperparameters were tuned using a grid search with cross validation method with 5 folds. Due to the unbalanced nature of the dataset, the F1-weighted score was used as the main metric to assess model performance.
+Additionally, all model hyperparameters were tuned using a grid search with cross validation method with 5 folds. Due to the unbalanced nature of classes in the dataset, in particular in terms of topic labels, the F1-weighted score was used as the main metric to assess model performance across the board.
 
 ## Repository structure
-The notebooks/ directory contains all steps I took in the process of data exploration and model selection / hyper parameter tuning. 
+The Project.ipynb notebook in the top-level directory covers the entire process of this project with expanations and visualization.
 
-The notebooks/ETL_exploration.ipynb notebook outlines the data exploration and embedding approach.
-
-The notebooks/MLP_exploration.ipynb notebook outlines the model selection and hyperparameter tuning for all three classifiers.
-
-The final model is implemented and trained in notebooks/ETL_MLP_pipeline.ipynb file.
+The notebooks/ directory contains all weird and random steps I took in the process of data exploration and model selection / hyper parameter tuning, including many that didn't make it in the final project deliverable. 
 
 All models and data used can be found in the data/ and models/ directories.
 
-The top-level .py files in the repository contain all the files needed to run the streamlit app and contain both code for data exploraiton and modeling, as well as detailed overview of the process with interactive visualizations.
+The top-level .py files in the repository contain all the files needed to run the streamlit app.
 
 ## ChatGPT bias
 
@@ -49,5 +48,11 @@ Run the app with
 streamlit run app.py
 ```
 
+If you have an OpenAI API key and want to try out the content analyzer, all you need to do is make a new file in the app directory called .env and log your api key in it as:
+```
+OPENAI_API_KEY = 'your-api-key-here'
+```
+The app will then read the key from your local environment and open the content analyzer section!
+
 ## Live App
-The full process is documented and live in a [streamlit app](https://gecheline-mediabias-x-chatgpt-app-b6uock.streamlit.app/). Some of the interactive functionalities may run slow due to all the preprocessing and communication with the OpenAI API, so be patient!
+Some of the interactive functionality, like exploring the data and fitting different models is available in a [streamlit app](https://gecheline-mediabias-x-chatgpt-app-b6uock.streamlit.app/). Unfortunately, the content analyzer can only run locally for the time being due to the OpenAI API key restrictions.
